@@ -1,0 +1,64 @@
+group 'de.codecentric'
+version '0.1-SNAPSHOT'
+
+buildscript {
+
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+
+  dependencies {
+    classpath "com.moowork.gradle:gradle-node-plugin:${rootProject.gradleNodeVersion}"
+  }
+}
+
+apply plugin: 'com.moowork.node'
+apply plugin: 'docker'
+
+idea {
+  module {
+    sourceDirs += file('src')
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+
+node {
+  // Version of node to use.
+  version = '5.10.1'
+  // Enabled the automatic download. False is the default. This always downloads a local node env into the workspace!
+  download = true
+  // define a local workdir, where the downloaded Node.JS is put into.
+  workDir = file("${project.buildDir}/nodejs")
+}
+
+
+npmSetup.dependsOn nodeSetup
+npmInstall.dependsOn npm_cache_clean
+
+task build(type: NpmTask) {
+  dependsOn ( 'cobertura')
+  args = [ 'run', 'build:prod']
+}
+
+task cobertura {
+  dependsOn('npm_run_test')
+}
+
+cobertura.dependsOn npmInstall
+
+task buildDocker(type: Docker, dependsOn: build) {
+  push = false
+  applicationName = "girlsday-ui"
+  stageDir = file("${rootProject.projectDir}/docker/girlsday-ui")
+  dockerfile = file("${stageDir}/Dockerfile")
+  doFirst {
+    copy {
+      from "${projectDir}/app"
+      into "${stageDir}/web"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+girlsday-ui:
+   image: de.codecentric/girlsday-ui:0.1-SNAPSHOT
+   restart: always
+   ports:
+    - "80:80"
+   volumes:
+    - ../girlsday-ui/dist:/usr/local/apache2/htdocs
