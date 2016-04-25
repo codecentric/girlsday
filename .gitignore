@@ -2,5 +2,6 @@
 /girlsday-ui/typings
 /gradlew
 /gradlew.bat
+/gradle
 npm-debug.log
 /girlsday-ui/dist/
