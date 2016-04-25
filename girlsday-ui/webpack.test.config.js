@@ -17,7 +17,7 @@ module.exports = helpers.validate({
   module: {
     preLoaders: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'tslint-loader',
         exclude: [
           helpers.root('node_modules')
@@ -33,7 +33,7 @@ module.exports = helpers.validate({
     ],
     loaders: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'ts-loader',
         query: {
           "compilerOptions": {

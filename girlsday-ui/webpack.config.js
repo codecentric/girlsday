@@ -29,7 +29,7 @@ module.exports = helpers.validate({
   // cache: false,
 
   // our angular app
-  entry: { 'polyfills': './src/polyfills.ts', 'main': './src/main.ts' },
+  entry: { 'main': './src/index.tsx' },
 
   // Config for our build files
   output: {
@@ -51,7 +51,7 @@ module.exports = helpers.validate({
     ],
     loaders: [
       // Support for .ts files.
-      { test: /\.ts$/, loader: 'ts-loader', exclude: [ /\.(spec|e2e)\.ts$/ ] },
+      { test: /\.tsx?$/, loader: 'ts-loader', exclude: [ /\.(spec|e2e)\.ts$/ ] },
 
       // Support for *.json files.
       { test: /\.json$/,  loader: 'json-loader' },
@@ -72,7 +72,6 @@ module.exports = helpers.validate({
 
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'polyfills', filename: 'polyfills.bundle.js', minChunks: Infinity }),
     // static assets
     new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
     // generating html

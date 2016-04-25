@@ -14,19 +14,8 @@ require('es6-promise');
 require('es6-shim');
 require('es7-reflect-metadata');
 
-require('zone.js/dist/zone.js');
-require('zone.js/dist/long-stack-trace-zone.js');
-require('zone.js/dist/jasmine-patch.js');
 
 
-var testing = require('angular2/testing');
-var browser = require('angular2/platform/testing/browser');
-
-testing.setBaseTestProviders(
-  browser.TEST_BROWSER_PLATFORM_PROVIDERS,
-  browser.TEST_BROWSER_APPLICATION_PROVIDERS);
-
-Object.assign(global, testing);
 /*
   Ok, this is kinda crazy. We can use the the context method on
   require that webpack created in order to tell webpack

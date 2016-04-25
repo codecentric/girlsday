@@ -40,8 +40,7 @@ module.exports = helpers.validate({
   debug: false,
 
   entry: {
-    'polyfills':'./src/polyfills.ts',
-    'main':'./src/main.ts' // our angular app
+    'main':'./src/index.tsx' // our angular app
   },
 
   // Config for our build files
@@ -55,13 +54,13 @@ module.exports = helpers.validate({
   resolve: {
     cache: false,
     // ensure loader extensions match
-    extensions: ['', '.ts','.js']
+    extensions: ['', '.ts', '.tsx', '.js']
   },
 
   module: {
     preLoaders: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'tslint-loader',
         exclude: [
           helpers.root('node_modules')
@@ -69,28 +68,15 @@ module.exports = helpers.validate({
       },
       {
         test: /\.js$/,
-        loader: 'source-map-loader',
-        exclude: [
-          helpers.root('node_modules/rxjs')
-        ]
+        loader: 'source-map-loader'
       }
     ],
     loaders: [
       // Support Angular 2 async routes via .async.ts
       // Support for .ts files.
       {
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        query: {
-          // remove TypeScript helpers to be injected below by DefinePlugin
-          'compilerOptions': {
-            'removeComments': true,
-            'noEmitHelpers': true
-          }
-        },
-        exclude: [
-          /\.(spec|e2e)\.ts$/
-        ]
+        test: /\.tsx?$/,
+        loader: 'ts-loader'
       },
 
       // Support for *.json files.
@@ -110,6 +96,7 @@ module.exports = helpers.validate({
 
       // Support bootstrap css
       { test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loader: 'babel' },
+      { test: /\.tsx?$/, exclude: /(node_modules|bower_components)/, loader: 'ts' },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
       { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
@@ -122,11 +109,6 @@ module.exports = helpers.validate({
     new WebpackMd5Hash(),
     new DedupePlugin(),
     new OccurenceOrderPlugin(true),
-    new CommonsChunkPlugin({
-      name: 'polyfills',
-      filename: 'polyfills.[chunkhash].bundle.js',
-      chunks: Infinity
-    }),
     // static assets
     new CopyWebpackPlugin([
       {
