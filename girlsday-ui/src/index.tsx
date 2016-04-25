@@ -1,42 +1,39 @@
-import store, {Person} from "./store";
+import store from "./store/store";
 import * as React from "react";
 import {render} from "react-dom";
 import {Provider} from "react-redux";
 import {App} from "./components/App";
 import * as moment from "moment";
+import {ActionType} from "./store/actionType";
+import {createTickAction, createStopAction, createStartAction} from "./store/actionCreators";
+import Person from "./types/person";
 
 store.subscribe(() => {
   let state = store.getState();
 
-  let numberOfOpenActions = state.get('persons')
-    .map((person:Person) => {
-      return person.tasks.size;
-    })
-    .reduce((a:number, b:number) => {
-      return a + b;
-    }, 0);
+  let numberOfOpenActions = Person.getNumberOfOpenTasks(state);
 
   if (numberOfOpenActions > 0) {
 
     switch (state.get('lastAction')) {
-      case 'RESET':
+      case ActionType.RESET:
       {
         break;
       }
-      case 'TICK':
+      case ActionType.TICK:
       {
-        store.dispatch({type: 'STOP_ACTIONS'});
+        store.dispatch(createStopAction());
         break;
       }
-      case 'STOP_ACTIONS':
+      case ActionType.STOP_ACTION:
       {
-        store.dispatch({type: 'START_ACTIONS'});
+        store.dispatch(createStartAction());
         break;
       }
-      case 'START_ACTIONS':
+      case ActionType.START_ACTION:
       {
         setTimeout(() => {
-          store.dispatch({type: 'TICK', time: 1});
+          store.dispatch(createTickAction(1));
         }, 200);
         break;
       }

@@ -3,4 +3,8 @@
 /gradlew
 /gradlew.bat
 npm-debug.log
+/girlsday-ui/node_modules
+/.idea
+/.gradle
+/docker/runtime.log
 /girlsday-ui/dist/

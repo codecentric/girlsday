@@ -2,10 +2,13 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {Map, List} from "immutable";
-import {Person, Task} from "../store";
+import {Task} from "../store/store";
+import Person from "../types/person";
+import {createUpdateList} from "../store/actionCreators";
 
 export interface OwnTaskPanelProps {
   person:Person;
+  sizeInColumns:number;
 }
 
 export interface TaskPanelProps {
@@ -54,9 +57,9 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
     e.target.parentNode.insertBefore(placeholder, e.target);
   };
 
-  createTaskList = (actions:List<Task>) => {
-    return actions.map((task:Task, i:number) => {
-
+  createTaskList = (tasks:List<Task>) => {
+    return tasks.map((task:Task, i:number) => {
+// TODO: highlight active task.
       let clazz:string = (task.running === true)
         ? 'list-group-item list-group-item-success'
         : 'list-group-item';
@@ -74,7 +77,9 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
   render() {
     const person = this.props.person;
 
-    return <div className="col-sm-3">
+    const clazzName = `col-sm-${this.props.sizeInColumns}`;
+
+    return <div className={clazzName}>
       <div className="panel panel-default">
         <div className="panel-heading">{person.name}</div>
         <div className="panel-body">
@@ -94,9 +99,7 @@ const mapStateToProps = (state:Map<any, any>) => {
 
 const mapDispatchToProps = (dispatch:any) => {
   return {
-    updateList: (person:Person, tasks:List<Task>) => {
-      dispatch({type: 'UPDATE_LIST', person: person, tasks: tasks})
-    },
+    updateList: (person:Person, tasks:List<Task>) => dispatch(createUpdateList(person, tasks))
   }
 };
 
@@ -104,6 +107,6 @@ const mapDispatchToProps = (dispatch:any) => {
 export const TaskPanelComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TaskPanel) as React.ComponentClass<OwnTaskPanelProps>
+)(TaskPanel) as React.ComponentClass<OwnTaskPanelProps>;
 
 export default TaskPanelComponent;

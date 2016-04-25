@@ -3,6 +3,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import * as moment from "moment";
 import {Map} from "immutable";
+import {createTickAction, createResetAction} from "../store/actionCreators";
 
 export interface HeaderProps {
   time:Date,
@@ -31,18 +32,18 @@ const mapStateToProps = (state:Map<any, any>) => {
   return {
     time: state.get('time')
   }
-}
+};
 
 const mapDispatchToProps = (dispatch:any) => {
   return {
     onStartClick: () => {
-      dispatch({type: 'TICK', time: 0})
+      dispatch(createTickAction(0))
     },
     onResetClick: () => {
-      dispatch({type: 'RESET', time: 0})
+      dispatch(createResetAction())
     }
   }
-}
+};
 
 
 export const HeaderComponent = connect(
