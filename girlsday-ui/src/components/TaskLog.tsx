@@ -1,7 +1,8 @@
-/// <reference path="../../typings/main.d.ts" />
-import * as React from "react";
-import {connect} from "react-redux";
-import {Map, List} from "immutable";
+/// <reference path='../../all.d.ts' />
+
+import * as React from 'react';
+import {connect} from 'react-redux';
+import {Map, List} from 'immutable';
 
 
 export interface TaskLogProps {
@@ -18,7 +19,7 @@ class TaskLog extends React.Component<TaskLogProps, {}> {
 
   render() {
 console.log(this.props.log.size);
-    return <div className="col-sm-12">
+    return <div className='col-sm-12'>
       <ul>
         {this.logEntries(this.props.log)}
       </ul>

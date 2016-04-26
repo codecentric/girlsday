@@ -1,34 +1,59 @@
 {
   "rules": {
-    "class-name": true,
-    "curly": false,
-    "eofline": true,
-    "indent": [
+    "align": [
       true,
+      "statements"
+    ],
+    "ban": false,
+    "class-name": true,
+    "comment-format": [
+      true
+    ],
+    "curly": true,
+    "eofline": true,
+    "forin": true,
+    "indent": [
+      false,
       "spaces"
     ],
+    "interface-name": false,
+    "jsdoc-format": true,
+    "label-position": true,
+    "label-undefined": true,
     "max-line-length": [
-      false,
-      100
-    ],
-    "member-ordering": [
       true,
-      "public-before-private",
-      "static-before-instance",
-      "variables-before-functions"
+      140
     ],
+    "member-access": false,
+    "member-ordering": false,
+    "no-any": false,
     "no-arg": true,
+    "no-bitwise": true,
+    "no-conditional-assignment": true,
+    "no-console": [
+      true,
+      "info",
+      "time",
+      "timeEnd"
+    ],
     "no-construct": true,
+    "no-constructor-vars": false,
+    "no-debugger": true,
     "no-duplicate-key": true,
-    "no-duplicate-variable": true,
-    "no-empty": false,
+    "no-shadowed-variable": true,
+    "no-duplicate-variable": false,
     "no-eval": true,
-    "trailing-comma": true,
+    "no-inferrable-types": false,
+    "no-internal-module": false,
+    "no-require-imports": false,
+    "no-string-literal": false,
     "no-trailing-whitespace": true,
+    "no-unreachable": true,
     "no-unused-expression": true,
     "no-unused-variable": false,
-    "no-unreachable": true,
     "no-use-before-declare": true,
+    "no-var-keyword": false,
+    "no-var-requires": false,
     "one-line": [
       true,
       "check-open-brace",
@@ -37,21 +62,37 @@
       "check-whitespace"
     ],
     "quotemark": [
-      false,
-      "single"
+      true,
+      "single",
+      "avoid-escape"
     ],
-    "semicolon": false,
+    "radix": true,
+    "semicolon": true,
+    "switch-default": false,
     "triple-equals": [
       true,
       "allow-null-check"
     ],
-    "variable-name": false,
-    "whitespace": [
+    "typedef": [
       true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator"
-    ]
+      "call-signature",
+      "parameter",
+      "property-declaration"
+    ],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      }
+    ],
+    "use-strict": [
+      true,
+      "check-function"
+    ],
+    "variable-name": false
   }
 }

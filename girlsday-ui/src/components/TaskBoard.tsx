@@ -1,10 +1,11 @@
-/// <reference path="../../typings/main.d.ts" />
-import * as React from "react";
-import {connect} from "react-redux";
-import {Map, List} from "immutable";
-import {TaskPanelComponent} from "./TaskPanel";
-import {TaskLogComponent} from "./TaskLog";
-import Person from "../types/person";
+/// <reference path='../../all.d.ts' />
+
+import * as React from 'react';
+import {connect} from 'react-redux';
+import {Map, List} from 'immutable';
+import {TaskPanelComponent} from './TaskPanel';
+import {TaskLogComponent} from './TaskLog';
+import Person from '../types/person';
 
 
 export interface TaskBoardProps {
@@ -21,11 +22,11 @@ class TaskBoard extends React.Component<TaskBoardProps, {}> {
   }
 
   render() {
-    return <div className="container">
-      <div className="row">
+    return <div className='container'>
+      <div className='row'>
         {this.createPanels(this.props.persons) }
       </div>
-      <div className="row">
+      <div className='row'>
         <TaskLogComponent />
       </div>
     </div>;

@@ -1,4 +1,5 @@
-/// <reference path="../../typings/main.d.ts" />
+/// <reference path='../../all.d.ts' />
+
 import * as React from "react";
 import {connect} from "react-redux";
 import * as moment from "moment";
@@ -19,11 +20,16 @@ class Header extends React.Component<HeaderProps, {}> {
     const onStartClick = this.props.onStartClick;
     const onResetClick = this.props.onResetClick;
 
-    return <div>
-      <h1>Hello {time}!</h1>
-      <button onClick={onStartClick}>start</button>
-      <button onClick={onResetClick}>reset</button>
-    </div>;
+    return <nav className="navbar navbar-default">
+      <div className="container-fluid">
+        <div className="navbar-header">
+          <a className="navbar-brand" href="#">{time}</a></div>
+        <div className="collapse navbar-collapse navbar-right">
+          <button className="btn btn-default navbar-btn" onClick={onStartClick}>start</button>
+          <button className="btn btn-default navbar-btn" onClick={onResetClick}>reset</button>
+        </div>
+      </div>
+    </nav>
   }
 }
 

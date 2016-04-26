@@ -1,12 +1,13 @@
-/// <reference path="../../typings/main.d.ts" />
-import * as React from "react";
-import {HeaderComponent} from "./Header";
-import {TaskBoardComponent} from "./TaskBoard";
+/// <reference path='../../all.d.ts' />
+
+import * as React from 'react';
+import {HeaderComponent} from './Header';
+import {TaskBoardComponent} from './TaskBoard';
 
 export interface AppProps {
 }
 
-export class App extends React.Component<AppProps, {}> {
+export default class App extends React.Component<AppProps, {}> {
   render() {
     return <div>
       <HeaderComponent />
@@ -15,4 +16,3 @@ export class App extends React.Component<AppProps, {}> {
   }
 }
 
-export default App;
