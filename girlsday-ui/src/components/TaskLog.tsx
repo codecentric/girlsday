@@ -13,7 +13,7 @@ class TaskLog extends React.Component<TaskLogProps, {}> {
 
   logEntries = (log:List<string>) => {
     return log.map((entry:string) => {
-      return <li>{entry}</li>
+      return <li dangerouslySetInnerHTML={{__html:entry}} />
     });
   };
 

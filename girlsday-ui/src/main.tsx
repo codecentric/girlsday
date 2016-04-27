@@ -10,6 +10,7 @@ import {createTickAction, createStopAction, createStartAction} from "./store/act
 import Person from "./types/person";
 import App from "./components/App";
 import {config} from "./config/config";
+import './assets/css/girlsday.css';
 
 
 class Main{

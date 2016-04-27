@@ -55,6 +55,6 @@ const mapDispatchToProps = (dispatch:any) => {
 export const HeaderComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Header)
+)(Header);
 
 export default HeaderComponent;

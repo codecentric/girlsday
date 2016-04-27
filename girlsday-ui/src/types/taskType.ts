@@ -9,10 +9,10 @@ export class TaskType {
   static TAKE_A_SHOWER = 'Duschen';
   static GET_DRESSED = 'Anziehen';
   static PUT_SHOES_ON = 'Schuhe anziehen';
-  static PICK_CLOTHES = 'Kleidung rauslegen';
-  static PUT_CLOTHES_ON = 'Kleidung anziehen';
+  static PICK_CLOTHES = 'Kinderkleidung rauslegen';
+  static PUT_CLOTHES_ON = 'Kinderkleidung anziehen';
   static DIAPER = 'Baby wickeln';
-  static PREPARE_FEED_BABY = 'Fläschen machen';
+  static PREPARE_FEED_BABY = 'Fläschchen machen';
   static FEED_BABY = 'Baby füttern';
   static DRESS_BABY = 'Baby anziehen';
   static MAKE_BREAKFAST = 'Frühstück machen';

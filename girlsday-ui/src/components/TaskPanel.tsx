@@ -99,7 +99,7 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
       return <li
         key={i}
         className={clazz}
-        style={{'overflow':'hidden'}}>{task.type}
+        style={{'overflow':'hidden'}}>{task.time} min.:<br/>{task.type}
         <div className="btn-group" role="group" style={{'float':'right'}}>
           {moveUpButton}
           {moveDownButton}
@@ -120,6 +120,7 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
           <ul className='list-group'>
             <li className="list-group-item">Wecker klingelt um {moment(person.wakeUp).format('hh:mm')} Uhr</li>
             {this.createTaskList(person.tasks) }
+            <li className="list-group-item">Gesamtzeit: {person.totalTime()} h</li>
           </ul>
         </div>
       </div>

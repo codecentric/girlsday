@@ -12,7 +12,7 @@ export class Task {
    * the Date, the task is done.
    * @type {Date}
    */
-  public endTime:Date = null
+  public endTime:Date = null;
 
   /**
    *

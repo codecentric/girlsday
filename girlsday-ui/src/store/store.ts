@@ -105,6 +105,8 @@ let startAction = (state) => {
 
         allRunningTasks.push(nextTask.type);
       } else {
+        let logMessage:string = `<strong>${moment(time).format('HH:mm')}: ${person.name}  kann nicht mit "${nextTask.type}" starten.</strong>`;
+        log.push(logMessage);
         nextTask.taskState = TaskState.BLOCKED;
       }
 
