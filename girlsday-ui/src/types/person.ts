@@ -5,7 +5,7 @@ import {Task} from "./task";
 import {TaskState} from "./taskState";
 
 export default class Person {
-  constructor(public name:string, public tasks:List<Task>) {
+  constructor(public name:string, public tasks:List<Task>, public wakeUp:Date) {
   }
 
   static getNumberOfOpenTasks = (state) => {
@@ -27,7 +27,11 @@ export default class Person {
       return task.taskState === TaskState.RUNNING;
     });
   };
-  
+
+  isAwake = (time:Date):boolean => {
+    return time >= this.wakeUp;
+  };
+
 
   finishedTasks = (time:Date) => {
     return this.tasks.filter((task:Task) => {

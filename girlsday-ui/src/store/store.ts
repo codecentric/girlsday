@@ -51,7 +51,7 @@ let stopAction = (state) => {
   let updatedPersons:List<Person> = persons.map((person:Person) => {
     let updatedTasksList:List<Task> = person.updateRunningTasks(time).toList();
 
-    return new Person(person.name, updatedTasksList);
+    return new Person(person.name, updatedTasksList, person.wakeUp);
   }).toList();
 
   return state
@@ -76,12 +76,14 @@ let startAction = (state) => {
       return task.type;
     });
 
+  let log:Array<string> = [];
+
   // get persons with no running task
   persons.forEach((person:Person) => {
     let runningTasks = person.runningTasks();
 
     // get first task that is not running and should start now (or is overdue)
-    if (runningTasks.size === 0 && person.numberOfOpenTasks() > 0) {
+    if (runningTasks.size === 0 && person.numberOfOpenTasks() > 0 && person.isAwake(time)) {
       let nextTask = person.nextTask();
 
       // check that nextAction is not blocked
@@ -92,8 +94,10 @@ let startAction = (state) => {
       if (nextTask && blockedTasks.indexOf(nextTask.type) < 0 && (parallelTasks.indexOf(nextTask.type) > -1
         || allRunningTasks.indexOf(nextTask.type) < 0)) {
 
-        console.log(`${moment(time).format('HH:mm')}: ${person.name}  starts ${nextTask.type}.
-            This takes: ${moment(nextTask.time)} minutes.`);
+        let logMessage:string = `${moment(time).format('HH:mm')}: ${person.name}  startet mit "${nextTask.type}".
+            Diese Aufgabe dauert ${moment(nextTask.time)} Minuten.`;
+
+        log.push(logMessage);
 
         // update endTime and set task to running
         nextTask.endTime = moment(state.get('time')).add(nextTask.time, 'm').toDate();
@@ -107,13 +111,23 @@ let startAction = (state) => {
     }
 
   });
-  return state
+
+  let stateWithNewLog;
+  if(log.length > 0){
+    stateWithNewLog = state.set('log', state.get('log').push(log));
+  }else{
+    stateWithNewLog = state;
+  }
+
+
+  return stateWithNewLog
     .set('lastAction', ActionType.START_ACTION)
-    .set('persons', persons);
+    .set('persons', persons)
+
 };
 
 let updateList = (state, action) => {
-  let newPerson = new Person(action.person.name, action.tasks);
+  let newPerson = new Person(action.person.name, action.tasks, action.person.wakeUp);
 
   let personList = <List<Person>>state.get('persons');
 

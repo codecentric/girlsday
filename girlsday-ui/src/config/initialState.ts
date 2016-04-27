@@ -6,8 +6,7 @@ import {TaskType} from "../types/taskType";
 import {ActionType} from "../store/actionType";
 import {initialPersonList} from "./persons";
 
-const sixOClock = moment('6', 'H').toDate();
-
+export const sixOClock = moment('6', 'H').toDate();
 export let generateInitialState = () => Map({
   // blocked tasks is a list of tasks that needs another task to unlock it. (MAKE_BREAKFAST => BREAKFAST)
   blockedTasks: List.of(TaskType.BREAKFAST, TaskType.DRIVE_TO_SCHOOL, TaskType.PUT_CLOTHES_ON, TaskType.FEED_BABY),

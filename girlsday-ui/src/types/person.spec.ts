@@ -6,6 +6,7 @@ import {List, Map} from "immutable";
 import {TaskType} from "./taskType";
 import {TaskState} from "./taskState";
 import * as moment from "moment";
+import {sixOClock} from "../config/initialState";
 
 describe('A Person', () => {
 
@@ -17,19 +18,19 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
       let person2 = new Person('P2', List.of(
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.BLOCKED),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
       let person3 = new Person('P3', List.of(
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.FINISHED),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.FINISHED)
-      ));
+      ), sixOClock);
 
       const testState = Map({
         persons: List.of(person1, person2, person3)
@@ -53,19 +54,19 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
       let person2 = new Person('P2', List.of(
         new Task(TaskType.BREAKFAST, 15, '', TaskState.RUNNING),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.WAITING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
       let person3 = new Person('P3', List.of(
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.FINISHED),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.RUNNING)
-      ));
+      ), sixOClock);
 
       const persons = List.of(person1, person2, person3);
 
@@ -88,7 +89,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
 
       let expected = [new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING)];
@@ -114,7 +115,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         runningTask,
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
 
       let expected = [runningTask];
@@ -138,7 +139,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         runningTask,
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
       let expected = [runningTask];
 
@@ -161,7 +162,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         runningTask,
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
 
       let expected = [];
@@ -184,7 +185,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         expected,
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
       let actual = person.nextTask();
 
@@ -201,7 +202,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         expected,
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
       let actual = person.nextTask();
 
@@ -228,7 +229,7 @@ describe('A Person', () => {
         finishedTask,
         runningTask,
         waitingTask
-      ));
+      ), sixOClock);
 
       let formerRunningTask = new Task(TaskType.WASH_FACE, 15, '', TaskState.FINISHED);
       formerRunningTask.endTime = sixOClock;
@@ -254,13 +255,53 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ));
+      ), sixOClock);
 
       let expected = 2;
 
       let actual = person.numberOfOpenTasks();
 
       expected.should.deep.equal(actual);
+
+      done();
+    });
+  });
+
+  describe('has a function isAwake()', () => {
+    it('should return true if the person is awake at the given time', (done) => {
+
+      let person = new Person('P1', List.of(
+        new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
+        new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
+        new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
+      ), sixOClock);
+
+
+      let expected = true;
+
+      let actual = person.isAwake(sixOClock);
+
+      expected.should.equal(actual);
+
+      done();
+    });
+
+    it('should return false if the person is not awake at the given time', (done) => {
+
+      let eightOClock = moment().hours(8).toDate();
+
+      let person = new Person('P1', List.of(
+        new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
+        new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
+        new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
+      ), eightOClock);
+
+
+      let expected = false;
+
+      let actual = person.isAwake(sixOClock);
+
+      expected.should.equal(actual);
 
       done();
     });

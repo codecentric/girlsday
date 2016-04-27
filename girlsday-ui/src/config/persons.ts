@@ -4,6 +4,7 @@ import {List} from "immutable";
 import {TaskType} from "../types/taskType";
 import {Task} from "../types/task";
 import Person from "../types/person";
+import * as moment from "moment";
 
 let mom = () => new Person('👩', List.of(
   new Task(TaskType.BRUSH_TEETH, 3),
@@ -18,7 +19,7 @@ let mom = () => new Person('👩', List.of(
   new Task(TaskType.DRESS_BABY, 15),
   new Task(TaskType.DRINK_COFFEE, 5),
   new Task(TaskType.DRIVE_TO_SCHOOL, 15)
-));
+), moment().hours(6).minutes(30).toDate());
 
 let dad = () => new Person('👨', List.of(
   new Task(TaskType.BRUSH_TEETH, 3),
@@ -30,7 +31,7 @@ let dad = () => new Person('👨', List.of(
   new Task(TaskType.CLEAN_KITCHEN, 15, TaskType.DRIVE_TO_SCHOOL),
   new Task(TaskType.PUT_SHOES_ON, 15),
   new Task(TaskType.DRIVE_TO_SCHOOL, 15)
-));
+), moment().hours(7).minutes(0).toDate());
 
 let daughter = () => new Person('👧', List.of(
   new Task(TaskType.WASH_FACE),
@@ -40,7 +41,7 @@ let daughter = () => new Person('👧', List.of(
   new Task(TaskType.PUT_SHOES_ON, 15),
   new Task(TaskType.PREPARE_FOR_SCHOOL, 10),
   new Task(TaskType.DRIVE_TO_SCHOOL, 15)
-));
+), moment().hours(7).minutes(30).toDate());
 
 let son = () => new Person('👶', List.of(
   new Task(TaskType.WASH_FACE),
@@ -49,6 +50,6 @@ let son = () => new Person('👶', List.of(
   new Task(TaskType.PUT_CLOTHES_ON, 15),
   new Task(TaskType.PUT_SHOES_ON, 15),
   new Task(TaskType.DRIVE_TO_SCHOOL, 15)
-));
+), moment().hours(7).minutes(30).toDate());
 
 export let initialPersonList = () => List.of(mom(), dad(), daughter(), son());

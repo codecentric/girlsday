@@ -18,7 +18,6 @@ class TaskLog extends React.Component<TaskLogProps, {}> {
   };
 
   render() {
-console.log(this.props.log.size);
     return <div className='col-sm-12'>
       <ul>
         {this.logEntries(this.props.log)}

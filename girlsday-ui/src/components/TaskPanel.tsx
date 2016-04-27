@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {connect} from "react-redux";
+import * as moment from 'moment';
 import {Map, List} from "immutable";
 import Person from "../types/person";
 import {createUpdateListAction} from "../store/actionCreators";
@@ -114,9 +115,10 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
 
     return <div className={clazzName}>
       <div className='panel panel-default'>
-        <div className='panel-heading' style={{'fontSize':'65', 'textAlign':'center'}}>{person.name}</div>
+        <div className='panel-heading' style={{'fontSize':'65px', 'textAlign':'center'}}>{person.name}</div>
         <div className='panel-body'>
           <ul className='list-group'>
+            <li className="list-group-item">Wecker klingelt um {moment(person.wakeUp).format('hh:mm')} Uhr</li>
             {this.createTaskList(person.tasks) }
           </ul>
         </div>

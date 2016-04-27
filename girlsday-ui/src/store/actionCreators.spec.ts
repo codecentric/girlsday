@@ -12,6 +12,7 @@ import {ActionType} from "./actionType";
 import Person from "../types/person";
 import {TaskType} from "../types/taskType";
 import {Task} from "../types/task";
+import {sixOClock} from "../config/initialState";
 
 describe('An action creater:', () => {
 
@@ -99,7 +100,7 @@ describe('An action creater:', () => {
   describe('for update', () => {
     it('should create an action of type UPDATE_LIST with the given person and the given tasks by default', (done) => {
 
-      let person = new Person('Test', List.of(new Task(TaskType.BREAKFAST)));
+      let person = new Person('Test', List.of(new Task(TaskType.BREAKFAST)), sixOClock);
       let tasks = List.of(new Task(TaskType.BREAKFAST), new Task(TaskType.DRINK_COFFEE));
 
       const expected = {
