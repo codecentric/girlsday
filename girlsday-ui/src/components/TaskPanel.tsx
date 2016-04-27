@@ -22,59 +22,31 @@ var placeholder = document.createElement('li');
 placeholder.className = 'list-group-item placeholder';
 
 export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProps, {}> {
-  private dragged:any = null;
-  private over:any = null;
-  private nodePlacement:string = '';
-
-  dragStart =  (e:any) =>{
-    this.dragged = e.currentTarget;
-    e.dataTransfer.effectAllowed = 'move';
-
-    // Firefox requires calling dataTransfer.setData
-    // for the drag to properly work
-    e.dataTransfer.setData("text/html", e.currentTarget);
-  };
-  dragEnd =  (e:any) =>{
-
-    this.dragged.style.display = "block";
-    this.dragged.parentNode.removeChild(placeholder);
 
 
+  updateTasks = (oldIndex:number, newIndex:number)=> {
+    let tasks = this.props.person.tasks.toArray();
 
-
-    // Update state
-    var data = this.props.person.tasks.toArray();
-    var from = Number(this.dragged.dataset.id);
-    var to = Number(this.over.dataset.id);
-
-    if (from < to) to--;
-    if(this.nodePlacement == "after") to++;
-    data.splice(to, 0, data.splice(from, 1)[0]);
+    if (newIndex >= tasks.length) {
+      var k = newIndex - tasks.length;
+      while ((k--) + 1) {
+        tasks.push(undefined);
+      }
+    }
+    tasks.splice(newIndex, 0, tasks.splice(oldIndex, 1)[0]);
 
     // update state
-    let newTaskList:List<Task> = List<Task>(data);
+    let newTaskList:List<Task> = List<Task>(tasks);
 
     this.props.updateList(this.props.person, newTaskList);
   };
-  dragOver =  (e:any) =>{
-    e.preventDefault();
-    this.dragged.style.display = "none";
-    if (e.target.className == "placeholder") return;
-    this.over = e.target;
-    e.target.parentNode.insertBefore(placeholder, e.target);
 
-    var relY = e.clientY - this.over.offsetTop;
-    var height = this.over.offsetHeight / 2;
-    var parent = e.target.parentNode;
+  moveUp = (i:number) => {
+    this.updateTasks(i, i - 1);
 
-    if (relY > height) {
-      this.nodePlacement = "after";
-      parent.insertBefore(placeholder, e.target.nextElementSibling);
-    }
-    else if (relY < height) {
-      this.nodePlacement = "before"
-      parent.insertBefore(placeholder, e.target);
-    }
+  };
+  moveDown = (i:number) => {
+    this.updateTasks(i, i + 1);
   };
 
   createTaskList = (tasks:List<Task>) => {
@@ -97,13 +69,41 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
           break;
       }
 
+      let moveUp = this.moveUp.bind(this, i);
+      let moveDown = this.moveDown.bind(this, i);
+
+      let moveUpButton;
+      if (i > 0) {
+        moveUpButton =<button type="button" className="btn btn-primary btn-xs" onClick={moveUp}>
+          <span className="glyphicon glyphicon-arrow-up"></span>
+        </button>
+      }
+      else {
+        moveUpButton = <button type="button" className="btn btn-primary btn-xs disabled">
+          <span className="glyphicon glyphicon-arrow-up"></span>
+        </button>;
+      }
+
+      let moveDownButton;
+      if (i < this.props.person.tasks.size - 1) {
+        moveDownButton = <button type="button" className="btn btn-primary btn-xs" onClick={moveDown}>
+          <span className="glyphicon glyphicon-arrow-down"></span>
+        </button>
+      } else {
+        moveDownButton = <button type="button" className="btn btn-primary btn-xs disabled">
+          <span className="glyphicon glyphicon-arrow-down"></span>
+        </button>
+      }
+
       return <li
-        data-id={i}
         key={i}
         className={clazz}
-        draggable='true'
-        onDragEnd={this.dragEnd}
-        onDragStart={this.dragStart}>{task.type}</li>
+        style={{'overflow':'hidden'}}>{task.type}
+        <div className="btn-group" role="group" style={{'float':'right'}}>
+          {moveUpButton}
+          {moveDownButton}
+        </div>
+      </li>
     });
   };
 
@@ -114,10 +114,9 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
 
     return <div className={clazzName}>
       <div className='panel panel-default'>
-        <div className='panel-heading'>{person.name}</div>
+        <div className='panel-heading' style={{'fontSize':'65', 'textAlign':'center'}}>{person.name}</div>
         <div className='panel-body'>
-          <ul className='list-group'
-              onDragOver={this.dragOver}>
+          <ul className='list-group'>
             {this.createTaskList(person.tasks) }
           </ul>
         </div>
