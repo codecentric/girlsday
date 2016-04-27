@@ -60,7 +60,7 @@ export let createStartAction = () => {
 /**
  * creates an UPDATE_LIST action
  *
- * this updates the given person and assigns the given list of taasks to the person.
+ * this updates the given person and assigns the given list of tasks to the person.
  *
  * @param person - to be updated
  * @param tasks - tasks that will be assigned to the person
@@ -72,4 +72,21 @@ export let createUpdateListAction = (person:Person, tasks:List<Task>) => {
     person: person,
     tasks: tasks
   };
+};
+
+/**
+ * creates an UPDATE_WAKE_UP_TIME action
+ *
+ * this updates the wake up time of the given person
+ *
+ * @param person - to be updated
+ * @param time - new wake up time
+ * @returns {{type: string, person: Person, time: Date}}
+ */
+export let createUpdateWakeUpAction = (person:Person, time:Date) => {
+  return {
+    type: ActionType.UPDATE_WAKE_UP_TIME,
+    person: person,
+    time: time
+  }
 };

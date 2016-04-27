@@ -5,8 +5,9 @@ import {
   createResetAction,
   createStopAction,
   createStartAction,
-  createUpdateListAction
+  createUpdateListAction, createUpdateWakeUpAction
 } from "./actionCreators";
+import * as moment from 'moment';
 import {List} from "immutable";
 import {ActionType} from "./actionType";
 import Person from "../types/person";
@@ -110,6 +111,27 @@ describe('An action creater:', () => {
       };
 
       const actual = createUpdateListAction(person, tasks);
+
+      actual.should.deep.equal(expected);
+
+      done();
+    });
+
+  });
+
+  describe('for wake up time', () => {
+    it('should create an action of type UPDATE_WAKE_UP_TIME with the given person and the given time by default', (done) => {
+
+      let person = new Person('Test', List.of(new Task(TaskType.BREAKFAST)), sixOClock);
+      let time = moment().hours(7).minutes(0).toDate();
+
+      const expected = {
+        type: ActionType.UPDATE_WAKE_UP_TIME,
+        person: person,
+        time: time
+      };
+
+      const actual = createUpdateWakeUpAction(person, time);
 
       actual.should.deep.equal(expected);
 

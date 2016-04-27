@@ -9,4 +9,5 @@ export class ActionType {
   static STOP_ACTION:string = 'STOP_ACTION';
   static START_ACTION:string = 'START_ACTION';
   static UPDATE_LIST:string = 'UPDATE_LIST';
+  static UPDATE_WAKE_UP_TIME:string = 'UPDATE_WAKE_UP_TIME';
 }

@@ -113,9 +113,11 @@ let startAction = (state) => {
   });
 
   let stateWithNewLog;
-  if(log.length > 0){
-    stateWithNewLog = state.set('log', state.get('log').push(log));
-  }else{
+  if (log.length > 0) {
+    let oldLogList:Array<string> = state.get('log');
+    let newLog = [].concat(oldLogList, log);
+    stateWithNewLog = state.set('log', newLog);
+  } else {
     stateWithNewLog = state;
   }
 
@@ -142,6 +144,23 @@ let updateList = (state, action) => {
     .set('persons', updatedPersonList);
 };
 
+
+let updateWakeUpTime = (state, action) => {
+  let newPerson = new Person(action.person.name, action.person.tasks, action.time);
+
+  let personList = <List<Person>>state.get('persons');
+
+  let updatedPersonList:List<Person> = personList.update(
+    personList.findIndex((person:Person) => {
+      return person.name === action.person.name;
+    }), (person:Person) => {
+      return newPerson;
+    });
+
+  return state.set('lastAction', ActionType.UPDATE_WAKE_UP_TIME)
+    .set('persons', updatedPersonList);
+};
+
 export let reducer = (state = generateInitialState(), action:any) => {
   switch (action.type) {
     case ActionType.RESET:
@@ -163,6 +182,10 @@ export let reducer = (state = generateInitialState(), action:any) => {
     case ActionType.UPDATE_LIST:
     {
       return updateList(state, action);
+    }
+    case ActionType.UPDATE_WAKE_UP_TIME:
+    {
+      return updateWakeUpTime(state, action);
     }
     default:
       return state;
