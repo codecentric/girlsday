@@ -1,0 +1,7 @@
+**/*.iml
+**/*.iws
+**/*.ipr
+
+**/node_modules
+**/build
+**/dist
