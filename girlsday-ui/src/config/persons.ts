@@ -29,8 +29,8 @@ let dad = () => new Person('👨', List.of(
     new Task(TaskType.BREAKFAST, 15),
     new Task(TaskType.DRINK_COFFEE, 10),
     new Task(TaskType.READ_NEWSPAPER, 5),
-    new Task(TaskType.CLEAN_KITCHEN, 15, TaskType.DRIVE_TO_SCHOOL),
-    new Task(TaskType.PUT_SHOES_ON, 5),
+    new Task(TaskType.CLEAN_KITCHEN, 15),
+    new Task(TaskType.PUT_SHOES_ON, 5, TaskType.DRIVE_TO_SCHOOL),
     new Task(TaskType.DRIVE_TO_SCHOOL, 15)
 ), moment().hours(6).minutes(30).toDate());
 
