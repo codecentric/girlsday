@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import {connect} from "react-redux";
-import * as moment from 'moment';
+import * as moment from "moment";
 import {Map, List} from "immutable";
 import Person from "../types/person";
-import {createUpdateListAction} from "../store/actionCreators";
+import {createUpdateListAction, createUpdateWakeUpAction} from "../store/actionCreators";
 import {Task} from "../types/task";
 import {TaskState} from "../types/taskState";
 
@@ -15,8 +15,8 @@ export interface OwnTaskPanelProps {
 }
 
 export interface TaskPanelProps {
-
   updateList:(person:Person, actions:List<Task>) => void;
+  updateWakeUpTime:(person:Person, time:Date) => void;
 }
 
 var placeholder = document.createElement('li');
@@ -108,6 +108,10 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
     });
   };
 
+  handleTimeChange = (event:any) => {
+    this.props.updateWakeUpTime(this.props.person, moment(event.target.value, 'hh:mm').toDate());
+  };
+
   render() {
     const person = this.props.person;
 
@@ -118,7 +122,9 @@ export class TaskPanel extends React.Component<OwnTaskPanelProps & TaskPanelProp
         <div className='panel-heading' style={{'fontSize':'65px', 'textAlign':'center'}}>{person.name}</div>
         <div className='panel-body'>
           <ul className='list-group'>
-            <li className="list-group-item">Wecker klingelt um {moment(person.wakeUp).format('hh:mm')} Uhr</li>
+            <li className="list-group-item">
+              Wecker klingelt um <input type="time" value={moment(person.wakeUp).format('hh:mm')} onChange={this.handleTimeChange}/>
+            </li>
             {this.createTaskList(person.tasks) }
             <li className="list-group-item">Gesamtzeit: {person.totalTime()} h</li>
           </ul>
@@ -134,7 +140,8 @@ const mapStateToProps = (state:Map<any, any>) => {
 
 const mapDispatchToProps = (dispatch:any) => {
   return {
-    updateList: (person:Person, tasks:List<Task>) => dispatch(createUpdateListAction(person, tasks))
+    updateList: (person:Person, tasks:List<Task>) => dispatch(createUpdateListAction(person, tasks)),
+    updateWakeUpTime: (person:Person, time:Date) => dispatch(createUpdateWakeUpAction(person, time))
   }
 };
 

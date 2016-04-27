@@ -12,8 +12,10 @@ export interface TaskLogProps {
 class TaskLog extends React.Component<TaskLogProps, {}> {
 
   logEntries = (log:List<string>) => {
-    return log.map((entry:string) => {
-      return <li dangerouslySetInnerHTML={{__html:entry}} />
+    return log
+      .filter((entry:string, i:number) => i > 0)
+      .map((entry:string, i:number) => {
+      return <li key={i} dangerouslySetInnerHTML={{__html:entry}} />
     });
   };
 
