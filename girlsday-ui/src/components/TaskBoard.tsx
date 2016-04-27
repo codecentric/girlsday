@@ -38,16 +38,16 @@ const mapStateToProps = (state:Map<any, any>) => {
   return {
     persons: state.get('persons')
   }
-}
+};
 
 const mapDispatchToProps = (dispatch:any) => {
   return {}
-}
+};
 
 
 export const TaskBoardComponent = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TaskBoard)
+)(TaskBoard);
 
 export default TaskBoardComponent;
