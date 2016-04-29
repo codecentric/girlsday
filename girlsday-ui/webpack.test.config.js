@@ -3,7 +3,7 @@
 var helpers = require('./helpers');
 // Webpack Plugins
 var ProvidePlugin = require('webpack/lib/ProvidePlugin');
-var DefinePlugin  = require('webpack/lib/DefinePlugin');
+var DefinePlugin = require('webpack/lib/DefinePlugin');
 var ENV = process.env.ENV = process.env.NODE_ENV = 'test';
 
 /*
@@ -11,13 +11,13 @@ var ENV = process.env.ENV = process.env.NODE_ENV = 'test';
  */
 module.exports = helpers.validate({
   resolve: {
-    extensions: ['', '.ts','.js']
+    extensions: ['', '.ts', '.js']
   },
   devtool: 'inline-source-map',
   module: {
     preLoaders: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'tslint-loader',
         exclude: [
           helpers.root('node_modules')
@@ -33,7 +33,7 @@ module.exports = helpers.validate({
     ],
     loaders: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'ts-loader',
         query: {
           "compilerOptions": {
@@ -41,30 +41,26 @@ module.exports = helpers.validate({
             "removeComments": true
           }
         },
-        exclude: [ /\.e2e\.ts$/ ]
+        exclude: [/\.e2e\.ts$/]
       },
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.html$/, loader: 'raw-loader' },
-      { test: /\.css$/,  loader: 'raw-loader' }
+      {test: /\.json$/, loader: 'json-loader'},
+      {test: /\.html$/, loader: 'raw-loader'},
+      {test: /\.css$/, loader: 'raw-loader'}
     ],
     postLoaders: [
       // instrument only testing sources with Istanbul
       {
-        test: /\.(js|ts)$/,
+        test: /\.(js|ts)x?$/,
         include: helpers.root('src'),
         loader: 'istanbul-instrumenter-loader',
         exclude: [
-          /\.(e2e|spec)\.ts$/,
+          /\.(e2e|spec)\.tsx?$/,
           /node_modules/
         ]
       }
-    ],
-    noParse: [
-      helpers.root('zone.js/dist'),
-      helpers.root('angular2/bundles')
     ]
   },
-  stats: { colors: true, reasons: true },
+  stats: {colors: true, reasons: true},
   debug: false,
   plugins: [
     new DefinePlugin({
@@ -83,7 +79,7 @@ module.exports = helpers.validate({
       '__param': 'ts-helper/param'
     })
   ],
-    // we need this due to problems with es6-shim
+  // we need this due to problems with es6-shim
   node: {
     global: 'window',
     progress: false,

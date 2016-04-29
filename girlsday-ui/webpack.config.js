@@ -29,7 +29,7 @@ module.exports = helpers.validate({
   // cache: false,
 
   // our angular app
-  entry: { 'polyfills': './src/polyfills.ts', 'main': './src/main.ts' },
+  entry: {'main': './src/main.tsx'},
 
   // Config for our build files
   output: {
@@ -40,43 +40,42 @@ module.exports = helpers.validate({
   },
 
   resolve: {
-    extensions: ['', '.ts', '.async.ts', '.js']
+    extensions: ['', '.ts', '.tsx',  '.async.ts', '.js']
   },
 
   module: {
     preLoaders: [
       // { test: /\.ts$/, loader: 'tslint-loader', exclude: [ helpers.root('node_modules') ] },
       // TODO(gdi2290): `exclude: [ helpers.root('node_modules/rxjs') ]` fixed with rxjs 5 beta.3 release
-      { test: /\.js$/, loader: "source-map-loader", exclude: [ helpers.root('node_modules/rxjs') ] }
+      {test: /\.js$/, loader: "source-map-loader"}
     ],
     loaders: [
       // Support for .ts files.
-      { test: /\.ts$/, loader: 'ts-loader', exclude: [ /\.(spec|e2e)\.ts$/ ] },
+      {test: /\.tsx?$/, loader: 'ts-loader'},
 
       // Support for *.json files.
-      { test: /\.json$/,  loader: 'json-loader' },
+      {test: /\.json$/, loader: 'json-loader'},
 
 
       // support for .html as raw text
-      { test: /\.html$/,  loader: 'raw-loader', exclude: [ helpers.root('src/index.html') ] },
+      {test: /\.html$/, loader: 'raw-loader', exclude: [helpers.root('src/index.html')]},
 
       // Support bootstrap css
-      { test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loader: 'babel' },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
-      { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" }
+      {test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loader: 'babel'},
+      {test: /\.css$/, loader: 'style-loader!css-loader'},
+      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
+      {test: /\.(woff|woff2)$/, loader: "url?prefix=font/&limit=5000"},
+      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream"},
+      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml"}
     ]
   },
 
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'polyfills', filename: 'polyfills.bundle.js', minChunks: Infinity }),
     // static assets
-    new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
+    new CopyWebpackPlugin([{from: 'src/assets', to: 'assets'}]),
     // generating html
-    new HtmlWebpackPlugin({ template: 'src/index.html' }),
+    new HtmlWebpackPlugin({template: 'src/index.html'}),
     // replace
     new webpack.DefinePlugin({
       'process.env': {
@@ -100,7 +99,7 @@ module.exports = helpers.validate({
     host: metadata.host,
     // contentBase: 'src/',
     historyApiFallback: true,
-    watchOptions: { aggregateTimeout: 300, poll: 1000 }
+    watchOptions: {aggregateTimeout: 300, poll: 1000}
   },
   // we need this due to problems with es6-shim
   node: {global: 'window', progress: false, crypto: 'empty', module: false, clearImmediate: false, setImmediate: false}

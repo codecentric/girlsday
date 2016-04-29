@@ -15,7 +15,7 @@ var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 var CompressionPlugin = require('compression-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var WebpackMd5Hash    = require('webpack-md5-hash');
+var WebpackMd5Hash = require('webpack-md5-hash');
 var ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 var HOST = process.env.HOST || 'localhost';
 var PORT = process.env.PORT || 8080;
@@ -40,8 +40,7 @@ module.exports = helpers.validate({
   debug: false,
 
   entry: {
-    'polyfills':'./src/polyfills.ts',
-    'main':'./src/main.ts' // our angular app
+    'main': './src/main.tsx'
   },
 
   // Config for our build files
@@ -55,42 +54,30 @@ module.exports = helpers.validate({
   resolve: {
     cache: false,
     // ensure loader extensions match
-    extensions: ['', '.ts','.js']
+    extensions: ['', '.ts', '.tsx', '.js']
   },
 
   module: {
     preLoaders: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'tslint-loader',
         exclude: [
-          helpers.root('node_modules')
+          /node_modules/,
+          /dist/
         ]
       },
       {
         test: /\.js$/,
-        loader: 'source-map-loader',
-        exclude: [
-          helpers.root('node_modules/rxjs')
-        ]
+        loader: 'source-map-loader'
       }
     ],
     loaders: [
       // Support Angular 2 async routes via .async.ts
       // Support for .ts files.
       {
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        query: {
-          // remove TypeScript helpers to be injected below by DefinePlugin
-          'compilerOptions': {
-            'removeComments': true,
-            'noEmitHelpers': true
-          }
-        },
-        exclude: [
-          /\.(spec|e2e)\.ts$/
-        ]
+        test: /\.tsx?$/,
+        loader: 'ts-loader'
       },
 
       // Support for *.json files.
@@ -110,9 +97,10 @@ module.exports = helpers.validate({
 
       // Support bootstrap css
       { test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loader: 'babel' },
+      { test: /\.tsx?$/, exclude: /(node_modules|bower_components)/, loader: 'ts' },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
-      { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
+      { test: /\.(woff|woff2)$/, loader: "url?prefix=font/&limit=5000" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" }
     ]
@@ -120,13 +108,6 @@ module.exports = helpers.validate({
 
   plugins: [
     new WebpackMd5Hash(),
-    new DedupePlugin(),
-    new OccurenceOrderPlugin(true),
-    new CommonsChunkPlugin({
-      name: 'polyfills',
-      filename: 'polyfills.[chunkhash].bundle.js',
-      chunks: Infinity
-    }),
     // static assets
     new CopyWebpackPlugin([
       {
@@ -142,66 +123,6 @@ module.exports = helpers.validate({
         'ENV': JSON.stringify(metadata.ENV),
         'NODE_ENV': JSON.stringify(metadata.ENV)
       }
-    }),
-    new ProvidePlugin({
-      // TypeScript helpers
-      '__metadata': 'ts-helper/metadata',
-      '__decorate': 'ts-helper/decorate',
-      '__awaiter': 'ts-helper/awaiter',
-      '__extends': 'ts-helper/extends',
-      '__param': 'ts-helper/param'
-    }),
-    new UglifyJsPlugin({
-      // to debug prod builds uncomment //debug lines and comment //prod lines
-
-      // beautify: true,//debug
-      // mangle: false,//debug
-      // dead_code: false,//debug
-      // unused: false,//debug
-      // deadCode: false,//debug
-      // compress : { screw_ie8 : true, keep_fnames: true, drop_debugger: false, dead_code: false, unused: false, }, // debug
-      // comments: true,//debug
-
-      beautify: false,//prod
-      // disable mangling because of a bug in angular2 beta.1, beta.2 and beta.3
-      // TODO(mastertinner): enable mangling as soon as angular2 beta.4 is out
-      // mangle: { screw_ie8 : true },//prod
-      mangle: false,
-      compress : { screw_ie8 : true },//prod
-      comments: false//prod
-
-    }),
-   // include uglify in production
-    new CompressionPlugin({
-      algorithm: helpers.gzipMaxLevel,
-      regExp: /\.css$|\.html$|\.js$|\.map$/,
-      threshold: 2 * 1024
     })
-  ],
-  // Other module loader config
-  tslint: {
-    emitErrors: true,
-    failOnHint: true,
-    resourcePath: 'src'
-  },
-  // don't use devServer for production
-
-  /*htmlLoader: {
-    minimize: true,
-    removeAttributeQuotes: false,
-    caseSensitive: true,   */
-  // */ in RegEx below breaks multiline comments:
-   // customAttrSurround: [ [/#/, /(?:)/], [/\*/, /(?:)/], [/\[?\(?/, /(?:)/] ],
-   /* customAttrAssign: [ /\)?\]?=/ ]
-  }, */
-
-  // we need this due to problems with es6-shim
-  node: {
-    global: 'window',
-    progress: false,
-    crypto: 'empty',
-    module: false,
-    clearImmediate: false,
-    setImmediate: false
-  }
+  ]
 });
