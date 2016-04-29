@@ -5,18 +5,18 @@ import {
   createResetAction,
   createStopAction,
   createStartAction,
-  createUpdateListAction, createUpdateWakeUpAction
+  createUpdateListAction,
+  createUpdateWakeUpAction
 } from "./actionCreators";
-import * as moment from 'moment';
+import * as moment from "moment";
 import {List} from "immutable";
 import {ActionType} from "./actionType";
 import Person from "../types/person";
 import {TaskType} from "../types/taskType";
 import {Task} from "../types/task";
-import {sixOClock} from "../config/initialState";
 
 describe('An action creater:', () => {
-
+  let startTime = moment().hours(6).toDate();
 
   describe('for tick', () => {
     it('should create an action of type TICK with time == 1 by default', (done) => {
@@ -101,7 +101,7 @@ describe('An action creater:', () => {
   describe('for update', () => {
     it('should create an action of type UPDATE_LIST with the given person and the given tasks by default', (done) => {
 
-      let person = new Person('Test', List.of(new Task(TaskType.BREAKFAST)), sixOClock);
+      let person = new Person('Test', List.of(new Task(TaskType.BREAKFAST)), startTime);
       let tasks = List.of(new Task(TaskType.BREAKFAST), new Task(TaskType.DRINK_COFFEE));
 
       const expected = {
@@ -122,7 +122,7 @@ describe('An action creater:', () => {
   describe('for wake up time', () => {
     it('should create an action of type UPDATE_WAKE_UP_TIME with the given person and the given time by default', (done) => {
 
-      let person = new Person('Test', List.of(new Task(TaskType.BREAKFAST)), sixOClock);
+      let person = new Person('Test', List.of(new Task(TaskType.BREAKFAST)), startTime);
       let time = moment().hours(7).minutes(0).toDate();
 
       const expected = {

@@ -6,10 +6,9 @@ import {List, Map} from "immutable";
 import {TaskType} from "./taskType";
 import {TaskState} from "./taskState";
 import * as moment from "moment";
-import {sixOClock} from "../config/initialState";
 
 describe('A Person', () => {
-
+  let startTime = moment().hour(6).toDate();
 
   describe('has a static method getNumberOfOpenTasks()', () => {
     it('should return the number of open tasks for the given state', (done) => {
@@ -18,19 +17,19 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
       let person2 = new Person('P2', List.of(
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.BLOCKED),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
       let person3 = new Person('P3', List.of(
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.FINISHED),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.FINISHED)
-      ), sixOClock);
+      ), startTime);
 
       const testState = Map({
         persons: List.of(person1, person2, person3)
@@ -54,19 +53,19 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
       let person2 = new Person('P2', List.of(
         new Task(TaskType.BREAKFAST, 15, '', TaskState.RUNNING),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.WAITING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
       let person3 = new Person('P3', List.of(
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.FINISHED),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.RUNNING)
-      ), sixOClock);
+      ), startTime);
 
       const persons = List.of(person1, person2, person3);
 
@@ -89,7 +88,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
 
       let expected = [new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING)];
@@ -185,7 +184,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         expected,
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
       let actual = person.nextTask();
 
@@ -202,7 +201,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         expected,
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
       let actual = person.nextTask();
 
@@ -255,7 +254,7 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
       let expected = 2;
 
@@ -274,12 +273,12 @@ describe('A Person', () => {
         new Task(TaskType.BREAKFAST, 15, '', TaskState.FINISHED),
         new Task(TaskType.WASH_FACE, 15, '', TaskState.RUNNING),
         new Task(TaskType.DRIVE_TO_SCHOOL, 15, '', TaskState.WAITING)
-      ), sixOClock);
+      ), startTime);
 
 
       let expected = true;
 
-      let actual = person.isAwake(sixOClock);
+      let actual = person.isAwake(startTime);
 
       expected.should.equal(actual);
 
@@ -299,7 +298,7 @@ describe('A Person', () => {
 
       let expected = false;
 
-      let actual = person.isAwake(sixOClock);
+      let actual = person.isAwake(startTime);
 
       expected.should.equal(actual);
 
